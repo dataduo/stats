@@ -7,11 +7,15 @@ class WelcomeController < ApplicationController
     @hi = 22
 
   # 	@lines = []
-  	@data_file = File.read(File.join(Rails.root, 'app','csv','test.csv'))
+  @data_file = File.read(File.join(Rails.root, 'app','csv','test.csv'))
   	
    csv = CSV.parse(@data_file , :headers => true)
 
    @test = csv
+
+   # bing = File.read(test.csv)
+
+   # @test2 = CSV.parse(bing , :headers => true)
   #csv.each do |row|
   #  @lines.push(row.to_hash)
   #end

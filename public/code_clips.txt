@@ -1,0 +1,43 @@
+    //var from_csv = "<%= @test[1]["Name"] %> "
+
+  // console.log(from_csv)
+  
+     //document.getElementById("panel").innerHTML= from_csv ;
+
+
+
+
+     var csv = <%= @test[0]["1"] %>
+
+    
+
+  console.log(csv.class)
+  
+     document.getElementById("panel").innerHTML= csv ;
+
+
+           var from_csv = <%= @test %>
+       var dataset;
+      d3.csv(from_csv, function(error, data) {
+
+        if (error) { 
+          console.log(error);
+
+        } else { 
+          console.log(data);
+          dataset = data;
+           generateVis();
+       
+        }
+      });
+
+      function generateVis(){
+        d3.select("body").selectAll("p")
+          .data(dataset)
+          .enter()
+          .append("p")
+          .text(function(d){
+            return "hi";
+          });
+      }
+
