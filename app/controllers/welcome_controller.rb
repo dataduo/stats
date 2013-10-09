@@ -4,7 +4,7 @@ class WelcomeController < ApplicationController
 
   def index
 
-
+    @hi = 22
 
   # 	@lines = []
   	@data_file = File.read(File.join(Rails.root, 'app','csv','test.csv'))

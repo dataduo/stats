@@ -7,7 +7,7 @@
 
 <h1><%= @test.class %></h1>
 
-<h1><%= @test[0]["Name"] %></h1>
+<h1><%#= @test[0]["Day"] %></h1>
 
 <h1 id = "panel"></h1>
 
@@ -15,37 +15,13 @@
 
  <script type="text/javascript">
 
- var from_cvs = <% @test[0]["Name"] %> 
+
+
+ var from_csv = "<%= @test[1]["Name"] %> "
+
+  // console.log(from_csv)
   
-  document.getElementById("panel").innerHTML= from_cvs ;
-
-
-      // var dataset;
-      // d3.csv('../../csv/test.csv', function(error, data) {
-
-      //   if (error) { 
-      //     console.log(error);
-
-      //   } else { //If no error, the file loaded correctly. Yay!
-      //     console.log("hi" + data); 
-      //     dataset = data;
-      //      generateVis();
-      
-      //   }
-      // });
-
-      // function generateVis(){
-      //   d3.select("body").selectAll("p")
-      //     .data(dataset)
-      //     .enter()
-      //     .append("p")
-      //     .text(function(d){
-      //       return "hi";
-      //     });
-      // }
-
-  
-
+     document.getElementById("panel").innerHTML= from_csv ;
 
 
 
