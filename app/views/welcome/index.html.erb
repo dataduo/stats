@@ -5,32 +5,52 @@
 
 <h1>Hello Again </h1>
 
+<h1><%= @test.class %></h1>
+
+<h1><%= @test[0]["Name"] %></h1>
+
+<h1 id = "panel"></h1>
+
+
+
  <script type="text/javascript">
 
-  var circleData = [
-  { "cx": 20, "cy": 20, "radius": 20, "color" : "pink" },
-  { "cx": 70, "cy": 70, "radius": 20, "color" : "green" }];
-
-  var svg = d3.select("body").append("svg")
-                              .attr("width", "300")
-                              .attr("height", "300");
-
-  var circles = svg.selectAll("circle")
-                    .data(circleData)
-                    .enter()
-                    .append("circle");
-
-  var circleAttr = circles
-                    .attr("cx", function(d){return d.cx;})
-                    .attr("cy", function(d){return d.cy;})
-                    .attr("r", function(d){return d.radius;})
-                    .style("fill", function(d){return d.color;});
+ var from_cvs = <% @test[0]["Name"] %> 
+  
+  document.getElementById("panel").innerHTML= from_cvs ;
 
 
+      // var dataset;
+      // d3.csv('../../csv/test.csv', function(error, data) {
+
+      //   if (error) { 
+      //     console.log(error);
+
+      //   } else { //If no error, the file loaded correctly. Yay!
+      //     console.log("hi" + data); 
+      //     dataset = data;
+      //      generateVis();
+      
+      //   }
+      // });
+
+      // function generateVis(){
+      //   d3.select("body").selectAll("p")
+      //     .data(dataset)
+      //     .enter()
+      //     .append("p")
+      //     .text(function(d){
+      //       return "hi";
+      //     });
+      // }
+
+  
 
 
 
- </script>
 
- <h1><%= @art %></h1>
+
+  </script>
+
+ 
 

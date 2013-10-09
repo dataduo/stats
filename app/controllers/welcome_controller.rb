@@ -1,16 +1,20 @@
 class WelcomeController < ApplicationController
   #require 'csv'
+  require 'json'
 
   def index
-  	@lines = []
+
+
+
+  # 	@lines = []
   	@data_file = File.read(File.join(Rails.root, 'app','csv','test.csv'))
   	
-csv = CSV.parse(@data_file , :headers => true)
-csv.each do |row|
-  @lines.push(row.to_hash)
-end
+   csv = CSV.parse(@data_file , :headers => true)
 
-    @art = @lines[0]["Art"]
+   @test = csv
+  #csv.each do |row|
+  #  @lines.push(row.to_hash)
+  #end
 
 
      #csv_to_array(@data_file, @lines)
@@ -18,7 +22,7 @@ end
     # CSV.foreach(@data_file, headers: true) do |row|
     #   @lines.push(row.to_hash)
     # end
-  	 #@art = l@ines[0]["Art"]
+  
   end
 
   def new
