@@ -5,48 +5,45 @@
 
 <h1>Hello Again </h1>
 
-<h1><%= @test.class %></h1>
-
-
-<h1><%= @test[0]["Art"] %></h1>
-
-
-
-<h1 id = "panel"></h1>
-
-
-
  <script type="text/javascript">
 
- var from_csv = "<%= @test[1]['Name'] %> "
+var dataset;
 
-console.log(from_csv)
-  
-document.getElementById("panel").innerHTML= from_csv ;
+var w = 400,
+      h = 300; 
+      d3.csv('test.csv', function(error, data) {
 
-// var dataset;
-//       d3.csv('test.csv', function(error, data) {
+        if (error) { 
+          console.log(error);
 
-//         if (error) { 
-//           console.log(error);
-
-//         } else { 
-//           console.log(data);
-//           dataset = data;
-//            generateVis();
+        } else { 
+          console.log(data);
+          dataset = data;
+           generateVis();
        
-//         }
-//       });
+        }
+      });
 
-//       function generateVis(){
-//         d3.select("body").selectAll("p")
-//           .data(dataset)
-//           .enter()
-//           .append("p")
-//           .text(function(d){
-//             return "hi";
-//           });
-//       }
+  function generateVis(){
+
+
+
+         var svg = d3.select("body").append("svg")
+                            .attr("width", w)
+                            .attr("height", h);
+
+  var bar = svg.selectAll("rect")
+          .data(dataset)
+          .enter()
+          .append("rect");
+
+  var bars = bar
+            .attr("width", 40)
+            .attr("height", function(d) {return d["Art"] * 4;})
+            .attr("x", function(d,i) {return i * 60})
+            .attr("y", function(d) { return  h - d["Art"] - 210;})
+            .style("fill", "pink");
+      }
     
 
 

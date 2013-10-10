@@ -41,3 +41,30 @@
           });
       }
 
+
+//  var from_csv = "<%= @test[1]['Name'] %> "
+
+// console.log(from_csv)
+  
+// document.getElementById("panel").innerHTML= from_csv ;
+
+
+<h1><%= @test.class %></h1>
+
+
+<h1><%= @test[0]["Art"] %></h1>
+
+
+
+<h1 id = "panel"></h1>
+
+
+
+        // d3.select("body").selectAll("p")
+        //   .data(dataset)
+        //   .enter()
+        //   .append("p")
+        //   .text(function(d){
+        //     return d["Name"] + d["Art"];
+        //   });
+
