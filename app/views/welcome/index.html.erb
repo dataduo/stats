@@ -9,47 +9,56 @@
 
  <script type="text/javascript">
 
-var dataset;
-
 var w = 400,
-      h = 300; 
-      d3.csv('test.csv', function(error, data) {
+    h = 300; 
+      
+d3.csv('test.csv', function(error, data) {
 
-        if (error) { 
-          console.log(error);
+  if (error) { 
+    console.log(error);
+  } else { 
+    dataset = data;
+    generateVis(dataset);
+  }
+  });
 
-        } else { 
-          console.log(data);
-          dataset = data;
-           generateVis();
-       
-        }
-      });
+function generateVis(dataset){
 
-  function generateVis(){
+  var dataset = dataset;
+
+  var data = [2, 8, 11, 23, 18];
+
+  var width = 300,
+  height = 400,
+  margin = {top: 40, right: 40, bottom: 40, left: 40};
+
+  var xScale = d3.scale.linear()
+        .domain([0, 5])
+        .range([0, width / 5 -20 ]);
+
+  var yScale = d3.scale.linear()
+        .domain([0, d3.max(dataset, function(d) { var test = d.Art; return test.length; })])
+        .range ([height - margin.top - margin.bottom, 0]);
 
 
 
-         var svg = d3.select("body").append("svg")
+    var svg = d3.select("body").append("svg")
                             .attr("width", w)
                             .attr("height", h);
 
-  var bar = svg.selectAll("rect")
+    var bar = svg.selectAll("rect")
           .data(dataset)
           .enter()
           .append("rect");
 
-  var bars = bar
-            .attr("width", 40)
-            .attr("height", function(d) {return d["Art"] * 4;})
+    var bars = bar
+            //.attr("width", function(d, i){console.log(d.Art.length); return xScale(d.Art);})
+            .attr("width", width / dataset.length -20 )
+            .attr("height", function(d) {return d.Art * 2;})
             .attr("x", function(d,i) {return i * 60})
-            .attr("y", function(d) { return  h - d["Art"] - 210;})
+            .attr("y", function(d) { return h - d.Art * 2;})
             .style("fill", "pink");
       }
-    
-
-
-
 
   </script>
 
