@@ -488,3 +488,12 @@ Thank You
 Questions?
 
 
+ // var yScale = d3.scale.linear()
+  //       .domain([0, d3.max(dataset, function(d) { var test = d.Art; return test.length; })])
+  //       .range ([height - margin.top - margin.bottom, 0]);
+
+
+    // var xScale = d3.scale.linear()
+  //       .domain([0, dataset.length])
+  //       .range([0, width / dataset.length - margin.left - margin.right]);
+

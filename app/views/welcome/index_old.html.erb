@@ -1,0 +1,92 @@
+<h1>Welcome#index</h1>
+<p>Find me in app/views/welcome/index.html.erb</p>
+
+<h1>Hi There and Welcome</h1>
+
+<h1>Hello Again, does my push to git work?</h1>
+
+<h1>Yes it does </h1>
+
+ <script type="text/javascript">
+
+var w = 400,
+    h = 300,
+    padding = 10;
+      
+d3.csv('test.csv', function(error, data) {
+
+  if (error) { 
+    console.log(error);
+  } else { 
+    dataset = data;
+    generateVis(dataset);
+  }
+  });
+
+function generateVis(dataset){
+
+  var dataset = dataset;
+
+
+
+  var width = 300,
+  height = 400,
+  margin = {top: 5, right: 5, bottom: 5, left: 5};
+
+ var xScale = d3.scale.linear()
+        .domain([dataset.length, 0])
+        .range([0, width - margin.left - margin.right]);
+
+var y = d3.scale.linear()
+          .domain([0, d3.max(dataset, function(d) {
+              return d.Art * 2;
+          })])
+        .range ([0, height]);
+
+var xAxis = d3.svg.axis()
+            .scale(xScale)
+            .ticks(5);
+
+var yAxis = d3.svg.axis()
+            .scale(y)
+            .ticks(5);
+
+    var svg = d3.select("body").append("svg")
+                            .attr("width", w)
+                            .attr("height", h)
+                            .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    var bar = svg.selectAll("rect")
+          .data(dataset)
+          .enter()
+          .append("rect");
+
+    var bars = bar
+            //.attr("width", function(d){return xScale(dataset.length);})
+            .attr("width", width / dataset.length - 20 )
+            .attr("height", function(d){ return y(d.Art);})  
+            //.attr("height", function(d) {return d.Art * 2;})
+            .attr("x", function(d,i) {return xScale(i);})
+            .attr("y", function(d) { return h - (d.Art * 2 + margin.top +margin.bottom);})
+            .style("fill", "pink");
+
+          //Attach X Axis
+  svg.append("g")
+    .attr("class", "axis")
+    .attr("transform", "translate(0," + (height - margin.top - margin.bottom) + ")")
+    .call(xAxis);
+
+  //Attach Y axis
+  svg.append("g")
+    .attr("class", "axis")
+    .attr("transform", "translate(" + padding + ",0)")
+    .call(yAxis);
+}//End of CSV
+
+
+
+  </script>
+
+ 
+
