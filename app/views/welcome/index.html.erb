@@ -30,15 +30,26 @@ function generateVis(dataset){
 
   var width = 300,
   height = 400,
-  margin = {top: 40, right: 40, bottom: 40, left: 40};
+  margin = {top: 5, right: 5, bottom: 5, left: 5};
 
-  var xScale = d3.scale.linear()
-        .domain([0, 5])
-        .range([0, width / 5 -20 ]);
+  // var xScale = d3.scale.linear()
+  //       .domain([0, dataset.length])
+  //       .range([0, width / dataset.length - margin.left - margin.right]);
 
-  var yScale = d3.scale.linear()
-        .domain([0, d3.max(dataset, function(d) { var test = d.Art; return test.length; })])
-        .range ([height - margin.top - margin.bottom, 0]);
+ var xScale = d3.scale.linear()
+        .domain([dataset.length, 0])
+        .range([0, width - margin.left - margin.right]);
+
+var y = d3.scale.linear()
+          .domain([0, d3.max(dataset, function(d) {
+              return d.Art * 2;
+          })])
+        .range ([0, height - margin.top - margin.bottom]);
+
+
+  // var yScale = d3.scale.linear()
+  //       .domain([0, d3.max(dataset, function(d) { var test = d.Art; return test.length; })])
+  //       .range ([height - margin.top - margin.bottom, 0]);
 
 
 
@@ -52,12 +63,15 @@ function generateVis(dataset){
           .append("rect");
 
     var bars = bar
-            //.attr("width", function(d, i){console.log(d.Art.length); return xScale(d.Art);})
+            //.attr("width", function(d){return xScale(dataset.length);})
             .attr("width", width / dataset.length -20 )
-            .attr("height", function(d) {return d.Art * 2;})
-            .attr("x", function(d,i) {return i * 60})
+            .attr("height", function(d){ return y(d.Art);})  
+            //.attr("height", function(d) {return d.Art * 2;})
+            .attr("x", function(d,i) {return xScale(i);})
             .attr("y", function(d) { return h - d.Art * 2;})
             .style("fill", "pink");
+
+   
       }
 
   </script>

@@ -68,3 +68,423 @@
         //     return d["Name"] + d["Art"];
         //   });
 
+
+
+<!DOCTYPE html>
+<meta charset="utf-8">
+<head><style>
+body{margin:0px;}
+.h,.v{stroke:black;stroke-dasharray:4 4;stroke-width:1;stroke-opacity:.5;}
+.axis path,
+.axis line {
+    fill: none;
+    stroke: black;
+    shape-rendering: crispEdges;
+}
+
+.axis text {
+    font-family: sans-serif;
+    font-size: 11px;
+}
+</style></head>
+<body>
+<script src="http://mbostock.github.com/d3/d3.v2.min.js"></script>
+
+<script>
+var width = 500,
+    height = 500, 
+    margin = 50;
+
+var svg=d3.select("body").append("svg").attr("width",width).attr("height",height);
+var x=d3.scale.linear().domain([0,5]).range([margin,width-margin]);
+var y=d3.scale.linear().domain([-10,10]).range([height-margin,margin]);
+var r=d3.scale.linear().domain([0,500]).range([0,20]);
+var o=d3.scale.linear().domain([10000,100000]).range([.5,1]);
+var c=d3.scale.category10().domain(["Africa","America","Asia","Europe","Oceania"]);
+
+d3.csv("data.csv",function(csv) {
+
+
+  // now we initiate - moving the marks to their position
+
+  svg.selectAll("circle").transition().duration(1000)
+    .attr("cx",function(d) {return x(+d.GERD);})
+    .attr("cy",function(d) {return y(+d.growth);})
+    .attr("r",function(d) {return r(Math.sqrt(+d.population));})
+})
+
+</script>
+
+
+</body>
+</html>
+
+
+
+
+return xScale(d.Art);
+
+
+
+
+
+
+D3.js 101
+A Technical Intro
+
+Scott Cheng @ PKU Vis Group
+The Power of D3
+
+http://bl.ocks.org/1256572
+
+http://bost.ocks.org/mike/miserables/
+
+http://mbostock.github.com/d3/talk/20111116/iris-splom.html
+
+http://mbostock.github.com/d3/talk/20111018/calendar.html
+
+http://mbostock.github.com/d3/talk/20111018/choropleth.html
+
+http://scottcheng.github.com/bj-air-vis/
+How D3 Works
+
+What I wish someone had told me
+when I was learning D3
+Data-DOM Binding
+
+Think about visualization –
+it's all about binding data to visual elements.
+D3 Programming Pattern
+
+var dataset = [20, 5, 10, 0, 50];
+
+d3.select('body')
+  .selectAll('p')  // selection
+  .data(dataset)  // data binding
+  .enter()
+    .append('p')  // dom manipulation
+    .attr('class', 'paragraph')  // static property
+    .text(function(d, i) {  // dynamic property
+      return i + ': my value is ' + d;
+    })
+    .style('font-size', function(d) {
+      return (d / 2 + 25) + 'px';  // maps to [25, 50]
+    });
+
+Try it here
+Update, Enter & Exit
+
+Visual elements enter or exit the stage
+
+// update
+var p = d3.select('body')
+  .selectAll('p')
+  .data(newData)  // elements that already are on the stage
+  .text(function(d) { return d + ' has been here all along'; });
+  
+// enter
+p.enter()  // elements that are about to enter the stage
+  .append('p')
+  .text(function(d) { return d + ' is new here'; });
+  
+// exit
+p.exit()  // elements that are about to exit the stage
+  .remove();
+
+Arrays & Data Manipulation
+
+d3.max(array[, accessor]);
+d3.min(array[, accessor]);
+d3.extent(array[, accessor]);
+d3.sum(array[, accessor]);
+d3.mean(array[, accessor]);
+d3.median(array[, accessor]);
+
+d3.range([start, ]stop[, step]);
+
+d3.nest()
+  .key(function(d) { return d.school })
+  .entries(array);  // or `.map(array)`
+
+SVG: Scalable Vector Graphic
+
+<svg width="400" height="300">
+  <circle cx="50" cy="100" r="200" fill="steelblue" />
+  <circle cx="300" cy="200" r="150" fill="white"
+    stroke="steelblue" stroke-width="5" fill-opacity=".5" />
+</svg>
+
+SVG Generators
+
+var width = 840, height = 500, padding = 10;
+var x = d3.scale.linear()  // x scale
+  .domain([0, dataset.length - 1])
+  .range([padding, width - padding]);
+var y = d3.scale.linear()  // y scale
+  .domain(d3.extent(dataset))
+  .range([height - padding, padding]);
+var line = d3.svg.line()  // line generator
+  .x(function(d, i) { return x(i); })
+  .y(function(d) { return y(d); });
+d3.select('body')
+  .append('svg')
+  .attr('width', width)
+  .attr('height', height)
+  .append('path')
+  .datum(dataset)
+  .attr('d', line);
+  
+
+Hands-On
+
+Based on http://bl.ocks.org/3048740 by Mike Bostock
+Setup
+
+var width = 840;
+var height = 500;
+var outerRadius = height / 2 - 10;
+var innerRadius = 120;
+
+var svg = d3.select('body').append('svg')
+  .attr('width', width)
+  .attr('height', height)
+  .attr('class', 'stacked-radial')
+  .append('g')
+  .attr('transform', 'translate(' + width / 2 + ',' + height / 2 + ')');
+
+Fetch Data With AJAX
+
+d3.csv('data.csv', function(data) {
+  // play with `data`
+});
+
+Stacked Radial Area Chart
+
+// [0, 7] -> [0, 2π]
+var angle = d3.time.scale()
+  .domain([0, d3.max(data, function(d) {
+    return d.time + 1;
+  })])
+  .range([0, 2 * Math.PI]);
+  
+// value -> radius
+var radius = d3.scale.linear()
+  .domain([0, d3.max(data, function(d) {
+    return d.y0 + d.y;
+  })])
+  .range([innerRadius, outerRadius]);
+  
+// ordinal scale of 20 colors
+var color = d3.scale.category20c();
+
+// area generator
+var area = d3.svg.area.radial()
+  .interpolate('cardinal-closed')
+  .angle(function(d) { return angle(d.time); })
+  .innerRadius(function(d) { return radius(d.y0); })
+  .outerRadius(function(d) { return radius(d.y0 + d.y); });
+  
+svg.selectAll('.layer')
+  .data(layers)
+  .enter().append('path')
+    .attr('class', 'layer')
+    .attr('d', function(d) { return area(d.values); })
+    .style('fill', function(d, i) { return color(i); });
+
+Axes
+
+// date -> weekday name
+var formatDate = d3.time.format('%a');
+// day -> weekday name
+var formatDay = function(d) {
+  return formatDate(new Date(2007, 0, d));
+};
+
+svg.selectAll('.axis')
+  .data(d3.range(
+    d3.max(data, function(d) { return d.time; }) - 
+    d3.min(data, function(d) { return d.time; }) + 1))
+  .enter().append('g')
+    .attr('class', 'axis')
+    .attr('transform', function(d) {
+      return 'rotate(' + angle(d) * 180 / Math.PI + ')';
+    })
+    .call(d3.svg.axis()
+      .scale(radius.copy().range([-innerRadius, -outerRadius]))
+      .orient('left'))
+    .append('text')  // weekdays
+      .attr('y', -innerRadius + 6)
+      .attr('dy', '.71em')
+      .attr('text-anchor', 'middle')
+      .text(function(d) { return formatDay(d); });
+
+Interaction
+
+var selected = [];  // ui state
+layers.forEach(function() { selected.push(false); });  // initialize state
+
+// add mouse click listener
+svg.selectAll('.layer')
+  .on('click', function(d, i) {
+    selected[i] = !selected[i];
+    render();
+  });
+  
+// render current state
+var render = function() {
+  svg.selectAll('.layer')
+    .transition()
+      .style('fill', function(d, i) {
+        if (d3.max(selected)) {
+          // something is selected
+          return selected[i] ? color(i) : '#eee';
+        } else {
+          // nothing is selected
+          return color(i);
+        }
+      });
+};
+
+Full, Runnable Code
+
+var width = 840;
+var height = 500;
+var outerRadius = height / 2 - 10;
+var innerRadius = 120;
+
+var svg = d3.select('body').append('svg')
+  .attr('width', width)
+  .attr('height', height)
+  .attr('class', 'stacked-radial')
+  .append('g')
+  .attr('transform', 'translate(' + width / 2 + ',' + height / 2 + ')');
+  
+d3.csv('data.csv', function(data) {
+  // data preprocessing
+  
+  // turn strings into numbers
+  data.forEach(function(d) {
+    d.time = +d.time;
+    d.value = +d.value;
+  });
+  
+  // nest operator
+  var nest = d3.nest()
+    .key(function(d) { return d.key; });
+    
+  // stack operator
+  var stack = d3.layout.stack()
+    .offset('zero')  // stack from a baseline
+    .values(function(d) { return d.values; })
+    .x(function(d) { return d.time; })
+    .y(function(d) { return d.value; });
+    
+  var layers = stack(nest.entries(data));
+  
+  
+  // draw stacked radial area chart
+  
+  // [0, 7] -> [0, 2π]
+  var angle = d3.time.scale()
+    .domain([0, d3.max(data, function(d) {
+      return d.time + 1;
+    })])
+    .range([0, 2 * Math.PI]);
+    
+  // value -> radius
+  var radius = d3.scale.linear()
+    .domain([0, d3.max(data, function(d) {
+      return d.y0 + d.y;
+    })])
+    .range([innerRadius, outerRadius]);
+    
+  // ordinal scale of 20 colors
+  var color = d3.scale.category20c();
+  
+  // area generator
+  var area = d3.svg.area.radial()
+    .interpolate('cardinal-closed')
+    .angle(function(d) { return angle(d.time); })
+    .innerRadius(function(d) { return radius(d.y0); })
+    .outerRadius(function(d) { return radius(d.y0 + d.y); });
+    
+  svg.selectAll('.layer')
+    .data(layers)
+    .enter().append('path')
+      .attr('class', 'layer')
+      .attr('d', function(d) { return area(d.values); })
+      .style('fill', function(d, i) { return color(i); });
+      
+      
+  // draw axes
+  
+  // date -> weekday name
+  var formatDate = d3.time.format('%a');
+  // day -> weekday name
+  var formatDay = function(d) {
+    return formatDate(new Date(2007, 0, d));
+  };
+  
+  svg.selectAll('.axis')
+    .data(d3.range(
+      d3.max(data, function(d) { return d.time; }) - 
+      d3.min(data, function(d) { return d.time; }) + 1))
+    .enter().append('g')
+      .attr('class', 'axis')
+      .attr('transform', function(d) {
+        return 'rotate(' + angle(d) * 180 / Math.PI + ')';
+      })
+      .call(d3.svg.axis()
+        .scale(radius.copy().range([-innerRadius, -outerRadius]))
+        .orient('left'))
+      .append('text')  // weekdays
+        .attr('y', -innerRadius + 6)
+        .attr('dy', '.71em')
+        .attr('text-anchor', 'middle')
+        .text(function(d) { return formatDay(d); });
+        
+        
+  // interaction
+  
+  var selected = [];  // ui state
+  layers.forEach(function() { selected.push(false); });  // initialize state
+  
+  // add mouse click listener
+  svg.selectAll('.layer')
+    .on('click', function(d, i) {
+      selected[i] = !selected[i];
+      render();
+    });
+    
+  // render current state
+  var render = function() {
+    svg.selectAll('.layer')
+      .transition()
+        .style('fill', function(d, i) {
+          if (d3.max(selected)) {
+            // something is selected
+            return selected[i] ? color(i) : '#eee';
+          } else {
+            // nothing is selected
+            return color(i);
+          }
+        });
+  };
+});
+
+Try it here
+Resources
+
+D3.js Website
+
+Gallery
+
+Tutorials
+
+API Reference
+
+GitHub Project
+Thank You
+Questions?
+
+
